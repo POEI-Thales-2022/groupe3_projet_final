@@ -9,14 +9,14 @@ resource "azurerm_resource_group" "rg" {
 
 resource "azurerm_virtual_network" "vnet" {
   name                = "vnet"
-  resource_group_name = random_pet.rg_name.id
+  resource_group_name = azurerm_resource_group.rg.name
   location            = var.resource_group_location
   address_space       = ["10.0.0.0/16"]
 }
 
 resource "azurerm_subnet" "subnet" {
   name                 = "subnet"
-  resource_group_name  = random_pet.rg_name.id
+  resource_group_name  = azurerm_resource_group.rg.name
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes     = ["10.0.0.0/24"]
 }
@@ -24,7 +24,7 @@ resource "azurerm_subnet" "subnet" {
 #creation vm
 resource "azurerm_public_ip" "gitlab_ip" {
   name                = "gitlab-ip"
-  resource_group_name = random_pet.rg_name.id
+  resource_group_name = azurerm_resource_group.rg.name
   location            = var.resource_group_location
   allocation_method   = "Static"
 }
@@ -32,7 +32,7 @@ resource "azurerm_public_ip" "gitlab_ip" {
 resource "azurerm_network_interface" "gitlab_nic" {
   name                = "gitlab-nic"
   location            = var.resource_group_location
-  resource_group_name = random_pet.rg_name.id
+  resource_group_name = azurerm_resource_group.rg.name
 
   ip_configuration {
     name                          = "internal"
@@ -44,9 +44,9 @@ resource "azurerm_network_interface" "gitlab_nic" {
 
 resource "azurerm_linux_virtual_machine" "gitlab" {
   name                = "gitlab"
-  resource_group_name = random_pet.rg_name.id
+  resource_group_name = azurerm_resource_group.rg.name
   location            = var.resource_group_location
-  size                = "Standard_B4msv2"
+  size                = "Standard_B4ms"
   admin_username      = "adminuser"
   network_interface_ids = [
     azurerm_network_interface.gitlab_nic.id,
@@ -65,7 +65,7 @@ resource "azurerm_linux_virtual_machine" "gitlab" {
   source_image_reference {
     publisher = "Canonical"
     offer     = "UbuntuServer"
-    sku       = "22.04-LTS"
+    sku       = "18.04-LTS"
     version   = "latest"
   }
 }
