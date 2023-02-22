@@ -27,7 +27,7 @@ resource "azurerm_linux_virtual_machine" "k8s_main" {
   name                = "k8s-main"
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
-  size                = "Standard_B2ms"
+  size                = "Standard_B4ms"
   admin_username      = "adminuser"
   network_interface_ids = [
     azurerm_network_interface.k8s_main_nic.id,
