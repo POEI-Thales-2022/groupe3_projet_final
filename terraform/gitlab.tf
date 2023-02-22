@@ -5,6 +5,19 @@ resource "azurerm_public_ip" "gitlab_ip" {
   allocation_method   = "Static"
 }
 
+resource "azurerm_dns_zone" "gitlab_dns_zone" {
+  name                = "gitlab-ce.westus3.cloudapp.azure.com"
+  resource_group_name = azurerm_resource_group.rg.name
+}
+
+resource "azurerm_dns_a_record" "gitlab_dns_a_record" {
+  name                = "gitlab_record_name"
+  zone_name           = azurerm_dns_zone.gitlab_dns_zone.name
+  resource_group_name = azurerm_resource_group.rg.name
+  ttl                 = 300
+  target_resource_id  = azurerm_public_ip.gitlab_ip.id
+}
+
 resource "azurerm_network_security_group" "gitlab_nsg" {
   name                = "gitlab-nsg"
   location            = azurerm_resource_group.rg.location
