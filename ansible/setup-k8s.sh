@@ -25,7 +25,6 @@ cd "$KUBESPRAY_PATH"
 python -m venv .env
 source .env/bin/activate
 pip install -r requirements.txt
-pip install -r contrib/inventory_builder/requirements
 python contrib/inventory_builder/inventory.py \
     "$K8S_MAIN_PRIVATE_IP,$K8S_MAIN_PUBLIC_IP" \
     "$K8S_WORKER_PRIVATE_IP,$K8S_WORKER_PUBLIC_IP"
