@@ -12,7 +12,7 @@ resource "azurerm_network_security_group" "gitlab_nsg" {
   resource_group_name = azurerm_resource_group.rg.name
 
   security_rule {
-    name                       = "SSH-GitLab"
+    name                       = "SSH-Machine"
     priority                   = 1001
     direction                  = "Inbound"
     access                     = "Allow"
@@ -24,7 +24,7 @@ resource "azurerm_network_security_group" "gitlab_nsg" {
   }
 
   security_rule {
-    name                       = "SSH-Machine"
+    name                       = "SSH-GitLab"
     priority                   = 1002
     direction                  = "Inbound"
     access                     = "Allow"
