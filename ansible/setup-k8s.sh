@@ -43,6 +43,5 @@ cd "$KUBESPRAY_PATH"
 python -m venv .env
 source .env/bin/activate
 pip install -r requirements.txt
-ansible-playbook ../k8s-set-hosts.yml -e '@../vars.yml'
 ansible-playbook -i ../inventory.ini cluster.yml -b -v \
     --private-key="$SSH_KEY_PATH" --user adminuser
