@@ -21,3 +21,7 @@ output "k8s_worker_public_ip" {
 output "k8s_worker_private_ip" {
   value = azurerm_network_interface.k8s_worker_nic.private_ip_address
 }
+
+output "iscsi_ip" {
+  value = azurerm_public_ip.iscsi_ip.ip_address
+}
