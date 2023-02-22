@@ -3,4 +3,5 @@ kubespray*
 
 # generated
 vars.yml
-inventory.ini
+*inventory.ini
+.env

@@ -1,18 +1,14 @@
 #!/bin/sh
-KUBESPRAY_VERSION=2.21.0
-SSH_KEY_PATH="$HOME/.ssh/projetfinal"
-
-# checks
-[ -f "$SSH_KEY_PATH" ] || (
-    echo "please get the project’s ssh key"
-    exit 1
-)
 
 # set vars
-source ./make-vars.sh
+source ./make-vars.sh || exit 1
+
+# run pre-spray playbook
+ansible-playbook -i general-inventory.ini pre-kubespray.yml \
+    --private-key "$SSH_KEY_PATH"
 
 # make inventory
-cat > inventory.ini << EOF
+cat > spray-inventory.ini << EOF
 [all]
 k8s-main ansible_host=$K8S_MAIN_PUBLIC_IP ip=$K8S_MAIN_IP etcd_member_name=etcd1
 k8s-worker ansible_host=$K8S_WORKER_PUBLIC_IP ip=$K8S_WORKER_IP etcd_member_name=etcd2
@@ -43,5 +39,5 @@ cd "$KUBESPRAY_PATH"
 python -m venv .env
 source .env/bin/activate
 pip install -r requirements.txt
-ansible-playbook -i ../inventory.ini cluster.yml -b -v \
+ansible-playbook -i ../spray-inventory.ini cluster.yml -b -v \
     --private-key="$SSH_KEY_PATH" --user adminuser

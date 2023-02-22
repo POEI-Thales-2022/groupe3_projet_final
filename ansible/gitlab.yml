@@ -1,18 +1,30 @@
 - name: Install GitLab
-  hosts: '{{ gitlab_ip }}'
+  hosts: gitlabs
   remote_user: adminuser
 
   tasks:
+    - name: Update system
+      become: true
+      ansible.builtin.apt:
+        update_cache: true
+        upgrade: full
+    - name: Install PIP
+      become: true
+      ansible.builtin.apt:
+        name:
+          - python3-pip
     - name: Get Docker install script
       ansible.builtin.get_url:
         url: https://get.docker.com
-        dest: docker-install.sh
-        mode: 600
+        dest: /tmp/docker-install.sh
+        mode: "0700"
     - name: Execute Docker install script
+      become: true
       ansible.builtin.command:
-        cmd: docker-install.sh
-        creates: /usr/local/bin/docker
+        cmd: /tmp/docker-install.sh
+        creates: /usr/bin/docker
     - name: Add adminuser to docker group
+      become: true
       ansible.builtin.user:
         user: adminuser
         append: true
@@ -21,10 +33,17 @@
     - name: Copy the docker-compose file
       ansible.builtin.copy:
         src: gitlab-docker-compose.yml
-        dest: docker-compose.yml
-        mode: 600
+        dest: /tmp/docker-compose.yml
+        mode: "0600"
+    - name: Install PIP packages
+      ansible.builtin.pip:
+        name:
+          - docker
+          - PyYAML
+          - docker-compose
     - name: Run docker-compose
       community.docker.docker_compose:
+        project_src: /tmp/
       environment:
         GITLAB_FQDN: '{{ gitlab_fqdn }}'
         GITLAB_HOME: '/srv/gitlab'

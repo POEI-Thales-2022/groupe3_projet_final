@@ -1,0 +1,10 @@
+- name: Prepare machines for KubeSpray
+  hosts: k8s
+  remote_user: adminuser
+
+  tasks:
+    - name: Update system
+      become: true
+      ansible.builtin.apt:
+        update_cache: true
+        upgrade: full
