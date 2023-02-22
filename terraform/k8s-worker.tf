@@ -1,12 +1,12 @@
-resource "azurerm_public_ip" "k8s_main_ip" {
-  name                = "k8s-main-ip"
+resource "azurerm_public_ip" "k8s_worker_ip" {
+  name                = "k8s-worker-ip"
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
   allocation_method   = "Static"
 }
 
-resource "azurerm_network_interface" "k8s_main_nic" {
-  name                = "k8s-main-nic"
+resource "azurerm_network_interface" "k8s_worker_nic" {
+  name                = "k8s-worker-nic"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
 
@@ -14,23 +14,23 @@ resource "azurerm_network_interface" "k8s_main_nic" {
     name                          = "internal"
     subnet_id                     = azurerm_subnet.subnet.id
     private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = azurerm_public_ip.k8s_main_ip.id
+    public_ip_address_id          = azurerm_public_ip.k8s_worker_ip.id
   }
 }
 
-resource "azurerm_network_interface_security_group_association" "k8s_main_nsg_assoc" {
-  network_interface_id      = azurerm_network_interface.k8s_main_nic.id
+resource "azurerm_network_interface_security_group_association" "k8s_worker_nsg_assoc" {
+  network_interface_id      = azurerm_network_interface.k8s_worker_nic.id
   network_security_group_id = azurerm_network_security_group.k8s_nsg.id
 }
 
-resource "azurerm_linux_virtual_machine" "k8s_main" {
-  name                = "k8s-main"
+resource "azurerm_linux_virtual_machine" "k8s_worker" {
+  name                = "k8s-worker"
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
-  size                = "Standard_B2ms"
+  size                = "Standard_B1s"
   admin_username      = "adminuser"
   network_interface_ids = [
-    azurerm_network_interface.k8s_main_nic.id,
+    azurerm_network_interface.k8s_worker_nic.id,
   ]
 
   admin_ssh_key {

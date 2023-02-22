@@ -1,0 +1,30 @@
+- name: Install GitLab
+  hosts: '{{ gitlab_ip }}'
+  remote_user: adminuser
+
+  tasks:
+    - name: Get Docker install script
+      ansible.builtin.get_url:
+        url: https://get.docker.com
+        dest: docker-install.sh
+        mode: 600
+    - name: Execute Docker install script
+      ansible.builtin.command:
+        cmd: docker-install.sh
+        creates: /usr/local/bin/docker
+    - name: Add adminuser to docker group
+      ansible.builtin.user:
+        user: adminuser
+        append: true
+        groups:
+          - docker
+    - name: Copy the docker-compose file
+      ansible.builtin.copy:
+        src: gitlab-docker-compose.yml
+        dest: docker-compose.yml
+        mode: 600
+    - name: Run docker-compose
+      community.docker.docker_compose:
+      environment:
+        GITLAB_FQDN: '{{ gitlab_fqdn }}'
+        GITLAB_HOME: '/srv/gitlab'
