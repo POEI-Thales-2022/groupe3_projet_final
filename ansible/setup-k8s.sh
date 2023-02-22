@@ -18,8 +18,8 @@ cd -
 
 # setup kubespray
 KUBESPRAY_PATH="kubespray-$KUBESPRAY_VERSION"
-[ -d "$KUBESPRAY_PATH" ] && rm -rf "$KUBESPRAY_PATH"
-curl -L "https://github.com/kubernetes-sigs/kubespray/archive/refs/tags/v$KUBESPRAY_VERSION.tar.gz" | \
+[ -d "$KUBESPRAY_PATH" ] || \
+    curl -L "https://github.com/kubernetes-sigs/kubespray/archive/refs/tags/v$KUBESPRAY_VERSION.tar.gz" | \
     tar xz
 cd "$KUBESPRAY_PATH"
 python -m venv .env
