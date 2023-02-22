@@ -9,7 +9,7 @@ SSH_KEY_PATH="$HOME/.ssh/projetfinal"
 )
 
 # set vars
-source make-vars.sh
+source ./make-vars.sh
 
 # make inventory
 cat > inventory.ini << EOF
@@ -36,7 +36,7 @@ EOF
 
 # setup kubespray
 KUBESPRAY_PATH="kubespray-$KUBESPRAY_VERSION"
-[ -d "$KUBESPRAY_PATH" ] && rm -rf "$KUBESPRAY_PATH"
+[ -d "$KUBESPRAY_PATH" ] || \
 curl -L "https://github.com/kubernetes-sigs/kubespray/archive/refs/tags/v$KUBESPRAY_VERSION.tar.gz" | \
     tar xz
 cd "$KUBESPRAY_PATH"
