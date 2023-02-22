@@ -1,2 +1,6 @@
+# vendor
 kubespray*
+
+# generated
 vars.yml
+inventory.ini
