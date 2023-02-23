@@ -18,10 +18,9 @@ resource "azurerm_virtual_network_gateway" "vpn_gateway" {
     sku           = "VpnGw1"
 
     ip_configuration {
-    name                          = "vpn-gateway"
-    public_ip_address_id          = azurerm_public_ip.vpn_ip.id
-    private_ip_address_allocation = "Dynamic"
-    subnet_id                     = azurerm_subnet.subnet.id
+        name                          = "vpn-gateway"
+        public_ip_address_id          = azurerm_public_ip.vpn_ip.id
+        private_ip_address_allocation = "Dynamic"
+        subnet_id                     = azurerm_subnet.subnet.id
     }
-    depends_on = [azurerm_public_ip.vpn_ip]
 }
