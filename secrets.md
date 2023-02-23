@@ -4,3 +4,4 @@
 * DNS : gitlab-ce.westus3.cloudapp.azure.com
 * Login : root
 * Mot de passe : a1LTFeFqSbBomXXRdMGG5fBNll2vAPy32pEDAW0oOcs=
+* Agent K8S token : t7C66f9GxYsAb7LTmoqomAqpoGmMESR3ss-S14NFKpSYHvN7ag
