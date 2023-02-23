@@ -2,7 +2,7 @@
 
 ## Crédits
 
-Réalisé par Mathieu Marconi, Nathan Lalloué, Paul Blouët, Sabrina Macaluso.
+Réalisé par Mathieu Marconi, Nathan Lalloué, Paul Blouët, Sabrina Macaluso !
 
 ## Installation rapide
 
