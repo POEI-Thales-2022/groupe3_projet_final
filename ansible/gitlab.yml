@@ -36,12 +36,14 @@
         dest: /tmp/docker-compose.yml
         mode: "0600"
     - name: Install PIP packages
+      become: true
       ansible.builtin.pip:
         name:
           - docker
           - PyYAML
           - docker-compose
     - name: Run docker-compose
+      become: true
       community.docker.docker_compose:
         project_src: /tmp/
       environment:
