@@ -116,4 +116,25 @@ resource "azurerm_linux_virtual_machine" "gitlab" {
     sku       = var.image_sku
     version   = var.image_version
   }
+ # resource "azurerm_virtual_machine_data_disk_attachment" "gitlab_config_disk_attachment" {
+ # managed_disk_id    = azurerm_managed_disk.gitlab_config_disk.id
+ # virtual_machine_id = azurerm_linux_virtual_machine.gitlab.id
+ # lun                = 0
+ # caching            = "ReadWrite"
+ # create_option      = "Attach"
+ #}
+ # resource "azurerm_virtual_machine_data_disk_attachment" "gitlab_log_disk_attachment" {
+ # managed_disk_id    = azurerm_managed_disk.gitlab_log_disk.id
+ # virtual_machine_id = azurerm_linux_virtual_machine.gitlab.id
+ # lun                = 1
+ # caching            = "ReadWrite"
+ # create_option      = "Attach"
+ #}
+ # resource "azurerm_virtual_machine_data_disk_attachment" "gitlab_data_disk_attachment" {
+ # managed_disk_id    = azurerm_managed_disk.gitlab_data_disk.id
+ # virtual_machine_id = azurerm_linux_virtual_machine.gitlab.id
+ # lun                = 2
+ # caching            = "ReadWrite"
+ # create_option      = "Attach"
+ #}
 }
