@@ -6,6 +6,10 @@ output "gitlab_ip" {
   value = azurerm_public_ip.gitlab_ip.ip_address
 }
 
+output "gitlab_private_ip" {
+  value = azurerm_network_interface.gitlab_nic.private_ip_address
+}
+
 output "k8s_main_public_ip" {
   value = azurerm_public_ip.k8s_main_ip.ip_address
 }

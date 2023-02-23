@@ -4,8 +4,16 @@ resource "azurerm_public_ip" "vpn_ip" {
     resource_group_name = azurerm_resource_group.rg.name
     allocation_method   = "Dynamic"
     
-    domain_name_label   = "finalGroupe3"
+    domain_name_label   = "final-groupe3"
 }
+
+resource "azurerm_subnet" "gateway_subnet" {
+  name                 = "GatewaySubnet"
+  resource_group_name  = azurerm_resource_group.rg.name
+  virtual_network_name = azurerm_virtual_network.vnet.name
+  address_prefixes     = ["10.0.1.0/24"]
+}
+
 
 resource "tls_private_key" "key" {
   algorithm = "RSA"
@@ -13,7 +21,7 @@ resource "tls_private_key" "key" {
 }
 
 resource "tls_self_signed_cert" "ca" {
-  key_algorithm   = tls_private_key.key.algorithm
+  #key_algorithm   = tls_private_key.key.algorithm
   private_key_pem = tls_private_key.key.private_key_pem
 
   # Certificate expires after 1 year
@@ -70,7 +78,7 @@ resource "tls_private_key" "client_cert" {
 }
 
 resource "tls_cert_request" "client_cert" {
-  key_algorithm = tls_private_key.client_cert.algorithm
+  #key_algorithm = tls_private_key.client_cert.algorithm
   private_key_pem = tls_private_key.client_cert.private_key_pem
 
   # dns_names = [ azurerm_public_ip.vpn_ip.domain_name_label ]
@@ -84,7 +92,7 @@ resource "tls_cert_request" "client_cert" {
 resource "tls_locally_signed_cert" "client_cert" {
   cert_request_pem = tls_cert_request.client_cert.cert_request_pem
 
-  ca_key_algorithm = tls_private_key.key.algorithm
+  #ca_key_algorithm = tls_private_key.key.algorithm
   ca_private_key_pem = tls_private_key.key.private_key_pem
   ca_cert_pem = tls_self_signed_cert.ca.cert_pem
 
@@ -115,7 +123,7 @@ resource "azurerm_virtual_network_gateway" "vpn-gateway" {
         name                          = "vpn-gateway"
     public_ip_address_id          = azurerm_public_ip.vpn_ip.id
     private_ip_address_allocation = "Dynamic"
-    subnet_id                     = azurerm_subnet.subnet.id
+    subnet_id                     = azurerm_subnet.gateway_subnet.id
   }
 
   vpn_client_configuration {
@@ -137,6 +145,7 @@ output "client_cert" {
 
 output "client_key" {
   value = tls_private_key.client_cert.private_key_pem
+  sensitive = true
 }
 
 output "vpn_id" {
