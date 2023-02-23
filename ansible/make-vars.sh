@@ -12,6 +12,15 @@ export K8S_MAIN_PUBLIC_IP="`terraform output -raw k8s_main_public_ip`"
 export K8S_WORKER_PUBLIC_IP="`terraform output -raw k8s_worker_public_ip`"
 cd -
 
+# add ssh-key
+[ -z "$SSH_AGENT_PID" ] && eval $(ssh-agent -s)
+ssh-add "$SSH_KEY_PATH"
+
+# setup Python
+python -m venv .env
+source .env/bin/activate
+pip install ansible
+
 # checks
 [ -f "$SSH_KEY_PATH" ] || (
     echo "please get the project’s ssh key"
