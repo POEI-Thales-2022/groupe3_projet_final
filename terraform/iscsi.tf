@@ -91,28 +91,28 @@ resource "azurerm_linux_virtual_machine" "iscsi" {
     sku       = "18.04-LTS"
     version   = "latest"
   }
-  
-  resource "azurerm_managed_disk" "gitlab_config_disk" {
-   name                = "gitlab-config-disk"
-   location            = azurerm_resource_group.rg.location
-   resource_group_name = azurerm_resource_group.rg.name
-   storage_account_type = "Premium_LRS"
-   disk_size_gb = 50
-  }
+}
 
- resource "azurerm_managed_disk" "gitlab_log_disk" {
+resource "azurerm_managed_disk" "gitlab_config_disk" {
+  name                = "gitlab-config-disk"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  storage_account_type = "Premium_LRS"
+  disk_size_gb = 50
+}
+
+resource "azurerm_managed_disk" "gitlab_log_disk" {
   name                = "gitlab-log-disk"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   storage_account_type = "Premium_LRS"
   disk_size_gb = 50
- }
+}
 
- resource "azurerm_managed_disk" "gitlab_data_disk" {
+resource "azurerm_managed_disk" "gitlab_data_disk" {
   name                = "gitlab-data-disk"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   storage_account_type = "Premium_LRS"
   disk_size_gb = 50
- }
 }
