@@ -30,9 +30,9 @@
         append: true
         groups:
           - docker
-    - name: Copy the docker-compose file
+    - name: Copy the GitLab docker-compose file
       ansible.builtin.copy:
-        src: gitlab-docker-compose.yml
+        src: gitlab.docker-compose.yml
         dest: /tmp/docker-compose.yml
         mode: "0600"
     - name: Install PIP packages
@@ -42,10 +42,35 @@
           - docker
           - PyYAML
           - docker-compose
-    - name: Run docker-compose
+    - name: Run GitLab docker-compose
       become: true
       community.docker.docker_compose:
         project_src: /tmp/
       environment:
         GITLAB_FQDN: '{{ gitlab_fqdn }}'
         GITLAB_HOME: '/srv/gitlab'
+    - name: Copy the GitLab Runner docker-compose file
+      ansible.builtin.copy:
+        src: gitlab-runner.docker-compose.yml
+        dest: /tmp/docker-compose.yml
+        mode: "0600"
+    - name: Run GitLab Runner docker-compose
+      become: true
+      community.docker.docker_compose:
+        project_src: /tmp/
+    - name: Copy the GitLab Runner config.toml
+      ansible.builtin.copy:
+        src: gitlab-runner.config.toml
+        dest: /tmp/config.toml
+        mode: "0600"
+    - name: Change the GitLab Runner options
+      become: true
+      community.docker.docker_container_copy_into:
+        container: gitlab-runner
+        path: /tmp/config.toml
+        container_path: /etc/gitlab-runner/config.toml
+    - name: Restart GitLab Runner
+      become: true
+      community.docker.docker_container:
+        name: gitlab-runner
+        restart: true

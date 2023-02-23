@@ -7,5 +7,5 @@
 (
     cd ansible
     ./setup-k8s.sh
-    ./setup-others.sh
+    ./setup-gitlab.sh
 )
