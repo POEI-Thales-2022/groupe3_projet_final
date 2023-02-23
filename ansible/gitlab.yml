@@ -49,28 +49,30 @@
       environment:
         GITLAB_FQDN: '{{ gitlab_fqdn }}'
         GITLAB_HOME: '/srv/gitlab'
-    - name: Copy the GitLab Runner docker-compose file
-      ansible.builtin.copy:
-        src: gitlab-runner.docker-compose.yml
-        dest: /tmp/docker-compose.yml
-        mode: "0600"
-    - name: Run GitLab Runner docker-compose
+    - name: Get GitLab Runner registration token
+      register: get_token
       become: true
-      community.docker.docker_compose:
-        project_src: /tmp/
-    - name: Copy the GitLab Runner config.toml
-      ansible.builtin.copy:
-        src: gitlab-runner.config.toml
-        dest: /tmp/config.toml
-        mode: "0600"
-    - name: Change the GitLab Runner options
+      community.docker.docker_container_exec:
+        container: gitlab
+        argv:
+          - gitlab-rails
+          - runner
+          - -e
+          - production
+          - "puts Gitlab::CurrentSettings.current_application_settings.runners_registration_token"
+    - name: Register GitLab Runner
       become: true
-      community.docker.docker_container_copy_into:
+      community.docker.docker_container_exec:
         container: gitlab-runner
-        path: /tmp/config.toml
-        container_path: /etc/gitlab-runner/config.toml
-    - name: Restart GitLab Runner
-      become: true
-      community.docker.docker_container:
-        name: gitlab-runner
-        restart: true
+        argv:
+          - gitlab-runner
+          - register
+          - --non-interactive
+          - --url
+          - 'https://{{ gitlab_fqdn }}'
+          - -r
+          - '{{ get_token.stdout }}'
+          - --executor
+          - docker
+          - --docker-image
+          - ruby:latest

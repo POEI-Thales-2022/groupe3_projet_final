@@ -13,7 +13,7 @@ export K8S_WORKER_PUBLIC_IP="`terraform output -raw k8s_worker_public_ip`"
 cd -
 
 # add ssh-key
-[ -z "$SSH_AGENT_PID" ] && eval $(ssh-agent -s)
+[ -z "$SSH_AUTH_SOCK" ] && eval $(ssh-agent -s)
 ssh-add "$SSH_KEY_PATH"
 
 # setup Python
