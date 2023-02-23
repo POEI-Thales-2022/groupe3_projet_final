@@ -98,7 +98,7 @@ resource "azurerm_linux_virtual_machine" "iscsi" {
  # resource_group_name = azurerm_resource_group.rg.name
  # storage_account_type = "Premium_LRS"
  # disk_size_gb = 50
-  }
+ # }
 
 # resource "azurerm_managed_disk" "gitlab_log_disk" {
  # name                = "gitlab-log-disk"
@@ -106,7 +106,7 @@ resource "azurerm_linux_virtual_machine" "iscsi" {
  # resource_group_name = azurerm_resource_group.rg.name
  # storage_account_type = "Premium_LRS"
  # disk_size_gb = 50
-  }
+ # }
 
 # resource "azurerm_managed_disk" "gitlab_data_disk" {
  # name                = "gitlab-data-disk"
@@ -114,5 +114,5 @@ resource "azurerm_linux_virtual_machine" "iscsi" {
  # resource_group_name = azurerm_resource_group.rg.name
  # storage_account_type = "Premium_LRS"
  # disk_size_gb = 50
-  }
+ # }
 }
