@@ -53,9 +53,9 @@ resource "azurerm_network_security_group" "gitlab_nsg" {
     direction                  = "Inbound"
     access                     = "Allow"
     protocol                   = "Tcp"
-    source_port_range          = ""
+    source_port_range          = "*"
     destination_port_range     = "5050"
-    source_address_prefix      = ""
+    source_address_prefix      = "*"
     destination_address_prefix = "*"
   }
 
