@@ -1,5 +1,5 @@
 variable "resource_group_location" {
-  default     = "westus"
+  default     = "westus3"
   description = "Location of the resource group."
 }
 
@@ -21,12 +21,4 @@ variable "image_sku" {
 
 variable "image_version" {
   default = "22.04.202302140"
-}
-
-variable "username" {
-  default     = "adminuser"
-}
-
-variable "password" {
-  default     = "Bonjour@2022"
 }
