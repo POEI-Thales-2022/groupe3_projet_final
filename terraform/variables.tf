@@ -1,10 +1,10 @@
 variable "resource_group_location" {
-  default     = "westus3"
+  default     = "westus"
   description = "Location of the resource group."
 }
 
 variable "resource_group_name" {
-  default = "projet-final-groupe-3"
+  default = "projet-test"
 }
 
 variable "image_publisher" {
