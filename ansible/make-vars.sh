@@ -1,15 +1,16 @@
 #!/bin/bash
+set -e
 
 # environment variables
 export KUBESPRAY_VERSION=2.21.0
 export SSH_KEY_PATH="$HOME/.ssh/projetfinal"
 cd ../terraform
-export GITLAB_IP="`terraform output -raw gitlab_ip`"
-export GITLAB_FQDN="`terraform output -raw gitlab_dns_name`"
-export K8S_MAIN_IP="`terraform output -raw k8s_main_private_ip`"
-export K8S_WORKER_IP="`terraform output -raw k8s_worker_private_ip`"
-export K8S_MAIN_PUBLIC_IP="`terraform output -raw k8s_main_public_ip`"
-export K8S_WORKER_PUBLIC_IP="`terraform output -raw k8s_worker_public_ip`"
+declare -a TERRAFORM_OUTPUTS
+TERRAFORM_OUTPUTS=(`terraform output | cut -f1 -d' '`)
+for LOWER in "${TERRAFORM_OUTPUTS[@]}"; do
+    UPPER="${LOWER^^}"
+    declare -x "$UPPER"="`terraform output -raw $LOWER`"
+done
 cd -
 
 # add ssh-key
@@ -28,20 +29,19 @@ pip install ansible
 )
 
 # ansible YAML variables file
-cat > vars.yml << EOF
-k8s_main_ip: $K8S_MAIN_IP
-k8s_worker_ip: $K8S_WORKER_IP
-gitlab_ip: $GITLAB_IP
-gitlab_fqdn: $GITLAB_FQDN
-EOF
+rm vars.yml
+for LOWER in "${TERRAFORM_OUTPUTS[@]}"; do
+    UPPER="${LOWER^^}"
+    echo "$LOWER: ${!UPPER}" >> vars.yml
+done
 
 # ansible inventory file
 # note: KubeSpray’s inventory is created in setup-k8s.sh
 cat > general-inventory.ini << EOF
-[k8s]
-k8s-main ansible_host=$K8S_MAIN_PUBLIC_IP
-k8s-worker ansible_host=$K8S_WORKER_PUBLIC_IP
-
 [gitlabs]
-gitlab ansible_host=$GITLAB_IP
+gitlab ansible_host=localhost ansible_port=8022
+
+[k8s]
+k8s-main ansible_host=localhost ansible_port=8023
+k8s-worker ansible_host=localhost ansible_port=8024
 EOF

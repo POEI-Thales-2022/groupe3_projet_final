@@ -42,7 +42,3 @@ resource "azurerm_lb_backend_address_pool_address" "k8s_lb_pool_add" {
   virtual_network_id      = azurerm_virtual_network.vnet.id
   ip_address              = var.metallb_first_ip
 }
-
-output "k8s_lb_public_ip" {
-    value = azurerm_public_ip.k8s_lb_ip.ip_address
-}

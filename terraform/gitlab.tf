@@ -4,6 +4,7 @@ resource "azurerm_public_ip" "gitlab_ip" {
   location            = azurerm_resource_group.rg.location
   allocation_method   = "Static"
   domain_name_label   = var.gitlab_dns
+  sku                 = "Standard"
 }
 
 resource "azurerm_network_security_group" "gitlab_nsg" {
@@ -12,25 +13,25 @@ resource "azurerm_network_security_group" "gitlab_nsg" {
   resource_group_name = azurerm_resource_group.rg.name
 
   security_rule {
-    name                       = "SSH-Machine"
+    name                       = "SSH-GitLab"
     priority                   = 1001
     direction                  = "Inbound"
     access                     = "Allow"
     protocol                   = "Tcp"
     source_port_range          = "*"
-    destination_port_range     = "22"
+    destination_port_range     = "1022"
     source_address_prefix      = "*"
     destination_address_prefix = "*"
   }
 
   security_rule {
-    name                       = "SSH-GitLab"
-    priority                   = 1002
+    name                       = "HTTP"
+    priority                   = 1004
     direction                  = "Inbound"
     access                     = "Allow"
     protocol                   = "Tcp"
     source_port_range          = "*"
-    destination_port_range     = "1022"
+    destination_port_range     = "80"
     source_address_prefix      = "*"
     destination_address_prefix = "*"
   }
@@ -55,18 +56,6 @@ resource "azurerm_network_security_group" "gitlab_nsg" {
     protocol                   = "Tcp"
     source_port_range          = "*"
     destination_port_range     = "5050"
-    source_address_prefix      = "*"
-    destination_address_prefix = "*"
-  }
-
-  security_rule {
-    name                       = "HTTP"
-    priority                   = 1004
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "Tcp"
-    source_port_range          = "*"
-    destination_port_range     = "80"
     source_address_prefix      = "*"
     destination_address_prefix = "*"
   }
@@ -116,26 +105,4 @@ resource "azurerm_linux_virtual_machine" "gitlab" {
     sku       = var.image_sku
     version   = var.image_version
   }
-}
-
-resource "azurerm_virtual_machine_data_disk_attachment" "gitlab_config_disk_attachment" {
-  managed_disk_id    = azurerm_managed_disk.gitlab_config_disk.id
-  virtual_machine_id = azurerm_linux_virtual_machine.gitlab.id
-  lun                = 0
-  caching            = "ReadWrite"
-  create_option      = "Attach"
-}
-resource "azurerm_virtual_machine_data_disk_attachment" "gitlab_log_disk_attachment" {
-  managed_disk_id    = azurerm_managed_disk.gitlab_log_disk.id
-  virtual_machine_id = azurerm_linux_virtual_machine.gitlab.id
-  lun                = 1
-  caching            = "ReadWrite"
-  create_option      = "Attach"
-}
-resource "azurerm_virtual_machine_data_disk_attachment" "gitlab_data_disk_attachment" {
-  managed_disk_id    = azurerm_managed_disk.gitlab_data_disk.id
-  virtual_machine_id = azurerm_linux_virtual_machine.gitlab.id
-  lun                = 2
-  caching            = "ReadWrite"
-  create_option      = "Attach"
 }

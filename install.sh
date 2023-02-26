@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 (
     cd terraform
     terraform plan -out plan

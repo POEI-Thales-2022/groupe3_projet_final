@@ -14,8 +14,8 @@ resource "azurerm_public_ip" "bastion_ip" {
   domain_name_label   = var.bastion_dns
 }
 
-resource "azurerm_bastion_host" "bastion_host" {
-  name                = "bastion-host"
+resource "azurerm_bastion_host" "bastion" {
+  name                = "bastion"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   sku                 = "Standard"
