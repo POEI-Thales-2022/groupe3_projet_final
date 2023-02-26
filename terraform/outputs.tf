@@ -34,6 +34,6 @@ output "gitlab_dns_name" {
   value = azurerm_public_ip.gitlab_ip.fqdn
 }
 
-output "vpn_ip" {
-  value = azurerm_public_ip.vpn_ip.ip_address
+output "bastion_ip" {
+  value = azurerm_public_ip.bastion_ip.ip_address
 }

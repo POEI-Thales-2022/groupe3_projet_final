@@ -22,3 +22,7 @@ variable "image_sku" {
 variable "image_version" {
   default = "22.04.202302140"
 }
+
+variable "metallb_first_ip" {
+  default = "10.187.0.0"
+}
