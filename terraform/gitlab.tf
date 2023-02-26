@@ -3,7 +3,7 @@ resource "azurerm_public_ip" "gitlab_ip" {
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
   allocation_method   = "Static"
-  domain_name_label   = "gitlab-ce"
+  domain_name_label   = var.gitlab_dns
 }
 
 resource "azurerm_network_security_group" "gitlab_nsg" {

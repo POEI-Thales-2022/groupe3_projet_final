@@ -4,6 +4,7 @@ resource "azurerm_public_ip" "k8s_lb_ip" {
   resource_group_name = azurerm_resource_group.rg.name
   allocation_method   = "Static"
   sku                 = "Standard"
+  domain_name_label   = var.k8s_lb_dns
 }
 
 resource "azurerm_lb" "k8s_lb" {

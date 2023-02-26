@@ -26,3 +26,15 @@ variable "image_version" {
 variable "metallb_first_ip" {
   default = "10.187.0.0"
 }
+
+variable "gitlab_dns" {
+  default = "gitlab-ce"
+}
+
+variable "k8s_lb_dns" {
+  default = "k8s-lb"
+}
+
+variable "bastion_dns" {
+  default = "g3-bastion"
+}
