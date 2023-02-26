@@ -7,15 +7,10 @@ source ./make-vars.sh
 # open tunnels
 az network bastion tunnel -g $RESOURCE_GROUP -n bastion \
     --target-resource-id $K8S_MAIN_RID --port 8023 --resource-port 22 &
-TUN1=$!
 az network bastion tunnel -g $RESOURCE_GROUP -n bastion \
     --target-resource-id $K8S_WORKER_RID --port 8024 --resource-port 22 &
-TUN2=$!
-sleep 5
-untunnel() {
-    kill $TUN1 $TUN2
-}
-trap untunnel EXIT
+sleep 10
+trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 
 # run pre-spray playbook
 ansible-playbook -i general-inventory.ini pre-kubespray.yml \
@@ -53,5 +48,5 @@ cd "$KUBESPRAY_PATH"
 python -m venv .env
 source .env/bin/activate
 pip install -r requirements.txt
-# ansible-playbook -i ../spray-inventory.ini cluster.yml -b -v \
-#     --private-key="$SSH_KEY_PATH" --user adminuser
+ansible-playbook -i ../spray-inventory.ini cluster.yml -b -v \
+    --private-key="$SSH_KEY_PATH" --user adminuser
