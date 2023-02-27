@@ -13,6 +13,18 @@ resource "azurerm_network_security_group" "gitlab_nsg" {
   resource_group_name = azurerm_resource_group.rg.name
 
   security_rule {
+    name                       = "SSH"
+    priority                   = 1006
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "22"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+
+  security_rule {
     name                       = "SSH-GitLab"
     priority                   = 1001
     direction                  = "Inbound"
@@ -56,6 +68,18 @@ resource "azurerm_network_security_group" "gitlab_nsg" {
     protocol                   = "Tcp"
     source_port_range          = "*"
     destination_port_range     = "5050"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+
+  security_rule {
+    name                       = "ICMP"
+    priority                   = 1007
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Icmp"
+    source_port_range          = "*"
+    destination_port_range     = "*"
     source_address_prefix      = "*"
     destination_address_prefix = "*"
   }

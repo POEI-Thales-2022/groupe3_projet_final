@@ -31,11 +31,11 @@ resource "azurerm_lb_nat_rule" "k8s_nat" {
   protocol                       = "Tcp"
   frontend_port                  = 80
   backend_port                   = 80
-  frontend_ip_configuration_name = "k8s-ip-conf"
+  frontend_ip_configuration_name = "k8s-lb-ip-conf"
 }
 
 resource "azurerm_network_interface_backend_address_pool_association" "k8s_lb_nic_assoc" {
   network_interface_id    = azurerm_network_interface.k8s_main_nic.id
-  ip_configuration_name   = "k8s-lb-ip-conf"
+  ip_configuration_name   = "internal"
   backend_address_pool_id = azurerm_lb_backend_address_pool.k8s_lb_pool.id
 }
