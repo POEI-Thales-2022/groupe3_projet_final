@@ -1,0 +1,10 @@
+- name: Opens or restarts the SSH tunnel to Traefik
+  hosts: k8s-main
+  remote_user: adminuser
+
+  tasks:
+    - name: Open the tunnel
+      become: true
+      ansible.builtin.command:
+        cmd: ssh -fNM -S /root/traefik-tunnel -o "ExitOnForwardFailure yes" -i ~adminuser/.ssh/id_rsa -L 80:10.0.0.253:80 adminuser@localhost
+        creates: /root/traefik-tunnel

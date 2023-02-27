@@ -23,10 +23,6 @@ variable "image_version" {
   default = "22.04.202302140"
 }
 
-variable "metallb_first_ip" {
-  default = "10.187.0.0"
-}
-
 variable "gitlab_dns" {
   default = "gitlab-ce"
 }
