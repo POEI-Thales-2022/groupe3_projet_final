@@ -4,6 +4,7 @@ resource "azurerm_public_ip" "k8s_main_ip" {
   location            = azurerm_resource_group.rg.location
   allocation_method   = "Static"
   sku                 = "Standard"
+  domain_name_label   = "hal-front"
 }
 output "k8s_main_public_ip" {
   value = azurerm_public_ip.k8s_main_ip.ip_address
