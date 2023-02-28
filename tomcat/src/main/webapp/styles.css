@@ -1,0 +1,44 @@
+@charset "UTF-8";
+
+body {
+	font-family: sans-serif;
+}
+
+dt {
+	font-weight: bold;
+}
+
+.table {
+	display: grid;
+	grid-template-columns: repeat(6, 1fr);
+	grid-auto-rows: minmax(32px, auto);
+	margin-top: 16px;
+}
+
+.table > div {
+	display: contents;
+}
+
+.table > div :first-child {
+	padding-left: 8px;
+}
+
+.thead {
+	font-weight: bold;
+}
+
+.bg-critical > div {
+	background-color: #d15353;
+}
+
+.bg-error > div {
+	background-color: #d18c53;
+}
+
+.bg-medium > div {
+	background-color: #d1b353;
+}
+
+.bg-minor > div {
+	background-color: #b5b07c;
+}

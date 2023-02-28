@@ -1,0 +1,16 @@
+<h3>Liste des incidents :</h3>
+
+<app-incident *ngFor="let i of incidents" [incident]=i></app-incident>
+
+
+<form [formGroup]="myForm" *ngIf="myForm" (ngSubmit)="submitData()">
+  <div class="mb-3 row">
+    <label for="theid" class="col-sm-2 col-form-label">Enlever l'incident numéro</label>
+    <div class="col-sm-2">
+      <select id="theid" class="form-select" formControlName="id">
+        <option *ngFor="let i of incidents" [ngValue]="i.id">{{i.id}}</option>
+      </select>
+    </div>
+  </div>
+  <button type="submit" class="btn btn-primary">Soumettre</button>
+</form>

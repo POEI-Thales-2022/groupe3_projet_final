@@ -1,0 +1,15 @@
+<div [class]="changeColor()">
+  <div class="card-body">
+    <h4 class="card-title" [routerLink]="['/incident', incident.id]">Incident numéro {{incident.id}} : {{incident.titre}}</h4>
+    Description : {{incident.description}} <br>
+    Sévérité : {{incident.level}} <br>
+    Type : {{incident.type}}  <br>
+    Progression : <ngb-progressbar type="info" [striped]="true" [animated]="true" [value]="incident.progress">{{incident.progress}}</ngb-progressbar>
+    Email : {{incident.email}}  <br>
+    Date de création : {{incident.dateCreation}} <br>
+    Date de mofification : {{incident.dateModification}} <br>
+    Ouvert : {{incident.open}}  <br>
+  </div>
+</div>
+
+<button type="button" class="btn btn-primary" title="delete incident" (click)="delete(incident)">Supprimer cet incident</button>

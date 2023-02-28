@@ -1,0 +1,64 @@
+stages:
+  - dependencies
+  - build
+  - package
+  - deploy
+
+install_dependencies:
+  image: node:18.14-alpine
+  stage: dependencies
+  script:
+    - npm install
+  only:
+    - main
+  cache:
+    key:
+      files:
+        - package-lock.json
+    paths:
+      - node_modules
+  artifacts:
+    paths:
+      - node_modules/*
+
+
+build:
+  image: node:18.14-alpine
+  stage: build
+  dependencies:
+    - install_dependencies
+  artifacts:
+    paths:
+      - $CI_PROJECT_DIR/dist
+  script:
+    - npm link @angular/cli@15.0.5
+    - npm run build
+  cache:
+    key:
+      files:
+        - package-lock.json
+    paths:
+      - node_modules
+    policy: pull
+
+docker-build:
+  image: docker:latest
+  services:
+    - docker:dind
+  stage: package
+  dependencies:
+    - build
+  script:
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN gitlab-ce.westus3.cloudapp.azure.com:5050
+    - docker build -t gitlab-ce.westus3.cloudapp.azure.com:5050/gitlab-instance-501ed118/angular .
+    - docker push gitlab-ce.westus3.cloudapp.azure.com:5050/gitlab-instance-501ed118/angular
+
+k8s-run:
+  image:
+    name: bitnami/kubectl
+    entrypoint:
+      - ''
+  stage: deploy
+  script:
+    - kubectl config use-context gitlab-instance-501ed118/spring:agent-k8s
+    - kubectl apply -f deployment.yml

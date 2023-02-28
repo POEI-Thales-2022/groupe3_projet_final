@@ -1,0 +1,12 @@
+stages:
+  - deploy
+
+k8s-run:
+  image:
+    name: bitnami/kubectl
+    entrypoint:
+      - ''
+  stage: deploy
+  script:
+    - kubectl config use-context gitlab-instance-501ed118/spring:agent-k8s
+    - kubectl apply -f deployment.yml

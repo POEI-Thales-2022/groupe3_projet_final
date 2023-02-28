@@ -1,0 +1,23 @@
+stages:
+  - package
+  - deploy
+
+docker-build:
+  image: docker:latest
+  services:
+    - docker:dind
+  stage: package
+  script:
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN gitlab-ce.westus3.cloudapp.azure.com:5050
+    - docker build -t gitlab-ce.westus3.cloudapp.azure.com:5050/gitlab-instance-501ed118/spring .
+    - docker push gitlab-ce.westus3.cloudapp.azure.com:5050/gitlab-instance-501ed118/spring
+
+k8s-run:
+  image:
+    name: bitnami/kubectl
+    entrypoint:
+      - ''
+  stage: deploy
+  script:
+    - kubectl config use-context gitlab-instance-501ed118/spring:agent-k8s
+    - kubectl apply -f deployment.yml

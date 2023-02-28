@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: angular
+  labels:
+    app: angular
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: angular
+  template:
+    metadata:
+      labels:
+        app: angular
+    spec:
+      containers:
+      - name: angular
+        image: gitlab-ce.westus3.cloudapp.azure.com:5050/gitlab-instance-501ed118/angular
+        imagePullPolicy: Always
+        ports:
+        - name: angular-port
+          containerPort: 80
+          protocol: TCP
+      imagePullSecrets:
+        - name: regcred
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: angular
+spec:
+  type: NodePort
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 30008
+  selector:
+    app: angular
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: regcred
+data:
+  .dockerconfigjson: ewoJImF1dGhzIjogewoJCSJnaXRsYWItY2Uud2VzdHVzMy5jbG91ZGFwcC5henVyZS5jb206NTA1MCI6IHsKCQkJImF1dGgiOiAiY205dmREcGhNVXhVUm1WR2NWTmlRbTl0V0ZoU1pFMUhSelZtUWs1c2JESjJRVkI1TXpKd1JVUkJWekJ2VDJOelBRPT0iCgkJfQoJfQp9
+type: kubernetes.io/dockerconfigjson

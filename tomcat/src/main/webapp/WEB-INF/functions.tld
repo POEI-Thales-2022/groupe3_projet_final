@@ -1,0 +1,11 @@
+<taglib version="2.1">
+	<tlib-version>1.0</tlib-version>
+	<function>
+		<name>cssSeverity</name>
+		<function-class>net.pblouet.ajc.incidents.servlet.IncidentListServlet
+		</function-class>
+		<function-signature>String cssSeverity(
+			net.pblouet.ajc.incidents.entity.Incident )
+		</function-signature>
+	</function>
+</taglib>

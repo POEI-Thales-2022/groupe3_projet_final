@@ -1,0 +1,63 @@
+<h3>Ajouter un incident :</h3>
+
+<form [formGroup]="myForm" *ngIf="myForm" (ngSubmit)="submitData()">
+  <div class="mb-3 row">
+    <label for="thetitre" class="col-sm-2 col-form-label">Titre</label>
+    <div class="col-sm-2">
+      <input type="text" class="form-control" id="thetitre" formControlName="titre">
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="thedescription" class="col-sm-2 col-form-label">Description</label>
+    <div class="col-sm-2">
+      <input type="text" class="form-control" id="thedescription" formControlName="description">
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="thelevel" class="col-sm-2 col-form-label">Sévérité</label>
+    <div class="col-sm-2">
+      <select id="thelevel" class="form-select" formControlName="level">
+        <option *ngFor="let l of level | keyvalue" [ngValue]="l.key">{{l.key}}</option>
+      </select>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="thetype" class="col-sm-2 col-form-label">Type</label>
+    <div class="col-sm-2">
+      <select id="thetype" class="form-select" formControlName="type">
+        <option *ngFor="let t of type | keyvalue" [ngValue]="t.value">{{t.value}}</option>
+      </select>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="theprogress" class="col-sm-2 col-form-label">Progression</label>
+    <div class="col-sm-2">
+      <input type="number" class="form-control" id="theprogress" formControlName="progress">
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="themail" class="col-sm-2 col-form-label">Mail</label>
+    <div class="col-sm-2">
+      <input type="email" class="form-control" id="themail" formControlName="email">
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="thedateCreation" class="col-sm-2 col-form-label">Date de création</label>
+    <div class="col-sm-2">
+      <input type="date" class="form-control" id="thedateCreation" formControlName="dateCreation">
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="thedateModification" class="col-sm-2 col-form-label">Date de modification</label>
+    <div class="col-sm-2">
+      <input type="date" class="form-control" id="thedateModification" formControlName="dateModification">
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="theopen" class="col-sm-2 col-form-label">Ouvert</label>
+    <div class="col-sm-2">
+      <input type="checkbox" class="form-check-input" id="theopen" formControlName="open">
+    </div>
+  </div>
+  <button type="submit" class="btn btn-primary">Soumettre</button>
+</form>

@@ -1,0 +1,11 @@
+<div [class]="changeColor()" style="cursor: pointer;" (click)="goTo(incident.id)">
+  <div class="card-body">
+    <h4 class="card-title" [routerLink]="['/incident', incident.id]">Incident numéro {{incident.id}} : {{incident.titre}}</h4>
+    Sévérité : {{incident.level}} <br>
+    Type : {{incident.type}}  <br>
+    Progression : <ngb-progressbar type="info" [striped]="true" [animated]="true" [value]="incident.progress">{{incident.progress}}</ngb-progressbar>
+    Email : {{incident.email}}  <br>
+    Ouvert : {{incident.open}}  <br>
+  </div>
+</div>
+

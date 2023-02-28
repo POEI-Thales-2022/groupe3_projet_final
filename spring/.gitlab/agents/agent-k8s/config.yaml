@@ -1,0 +1,6 @@
+ci_access:
+  projects:
+    - id: gitlab-instance-501ed118/spring
+    - id: gitlab-instance-501ed118/ingress-controller
+    - id: gitlab-instance-501ed118/tomcat
+    - id: gitlab-instance-501ed118/angular
